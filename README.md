@@ -54,6 +54,6 @@
 #ansible-playbook -i hosts config-rabbitmq.yml -k
 #SSH password:   # 输入rabbitmq服务器的密码
 
-nsible-playbook -i hosts setup_portal.yml
+ansible-playbook -i hosts setup_portal.yml
 
 ```
