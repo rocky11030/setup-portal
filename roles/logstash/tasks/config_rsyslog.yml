@@ -1,0 +1,30 @@
+---
+
+  - name: Set the syslog to modload imudp
+    lineinfile:
+      path: /etc/rsyslog.conf
+      regexp: '^\#\$ModLoad imudp'
+      line: '$ModLoad imudp'
+      backrefs: yes
+    notify:
+      - restart rsyslog
+
+  - name: Set the syslog to udp port 514
+    lineinfile:
+      path: /etc/rsyslog.conf
+      regexp: '^\#\$UDPServerRun 514'
+      line: '$UDPServerRun 514'
+      backrefs: yes
+    notify:
+      - restart rsyslog
+
+  - name: Set RemoteLogs dir
+    blockinfile:
+      path: /etc/rsyslog.conf
+      block: |
+        $template RemoteLogs,"/var/log/baseop/%HOSTNAME%/baselog.log" *
+        local1.* ?RemoteLogs
+        & ~
+      insertafter: EOF
+    notify:
+      - restart rsyslog

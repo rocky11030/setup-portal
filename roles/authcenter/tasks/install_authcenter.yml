@@ -1,0 +1,35 @@
+---
+  #- name: Download ncloud war
+  #  get_url:
+  #    url: "{{ apache_url }}/{{ app_name }}-{{ war_version }}.war"
+  #    dest: "{{ tomcat_dir }}/tomcat-{{ app_name }}/webapps/{{ app_name }}.war"
+  #  notify: restart tomcat
+
+  - name: Download ncloud war
+    copy:
+      src: "{{ app_name }}-{{ war_version }}.war"
+      dest: "{{ tomcat_dir }}/tomcat-{{ app_name }}/webapps/{{ app_name }}.war"
+    notify: restart tomcat
+  
+  - name: restart tomcat1
+    service:
+      name: tomcat-{{ app_name }}
+      state: restarted
+
+  - name: Waiting for start tomcat service
+    wait_for:
+      path: "{{ tomcat_dir }}/tomcat-{{ app_name }}/webapps/{{ app_name }}/WEB-INF/jdbc.properties"
+      sleep: 10
+
+  - name: Scp config file
+    template:
+      src: "{{ item.name }}"
+      dest: "{{ tomcat_dir }}/tomcat-{{ app_name }}/webapps/{{ app_name }}/{{ item.dir }}"
+    with_items:
+      - { name: 'jdbc.properties', dir: 'WEB-INF'}
+      - { name: 'endpoint.properties', dir: 'WEB-INF/classes'}
+      - { name: 'cache_redis.properties', dir: 'WEB-INF/classes'}
+      - { name: 'rabbitMq.properties', dir: 'WEB-INF/classes'}
+      - { name: 'dubbo-provider.xml', dir: 'WEB-INF'}
+      - { name: 'log4j.properties', dir: 'WEB-INF'}
+    notify: restart tomcat

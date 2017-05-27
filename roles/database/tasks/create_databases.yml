@@ -1,0 +1,34 @@
+---
+- name: create database of portal
+  mysql_db:
+    name: "{{ item }}"
+    login_user: root
+    login_password: "{{ galera_root_password }}"
+    login_port: "{{ db_port }}"
+    #login_host: "{{ virtual_ip }}"
+    login_host: localhost
+  with_items:
+    - "{{ ncloud_database_name }}"
+    - "{{ manager_database_name }}"
+    - "{{ authcenter_database_name }}"
+
+- name: create portal user and privileges portal database
+  mysql_user:
+    name: "{{ db_username }}"
+    login_user: root
+    login_password: "{{ galera_root_password }}"
+    #login_host: "{{ virtual_ip }}"
+    login_host: localhost
+    login_port: "{{ db_port }}"
+    password: "{{ db_password_mw }}"
+    host: "{{ item }}"
+    priv: '*.*:ALL'
+  with_items:
+    - "%"
+    - localhost
+
+#  - name: Authorized neunncloud user remote login
+#    shell: mysql -u {{ db_manager_user }} -p{{ db_manager_passwd }} -e 'grant all privileges on *.* to {{ db_username }} @"%" identified by "{{ db_password_mw }}"'
+
+#  - name: Authorized neunncloud user remote login
+#    shell: mysql -u {{ db_manager_user }} -p{{ db_manager_passwd }} -e 'flush privileges'

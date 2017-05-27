@@ -1,0 +1,6 @@
+---
+
+  - include: config_es_domain.yml
+  - include: install_nsearch.yml
+    tags:
+      - install_nsearch

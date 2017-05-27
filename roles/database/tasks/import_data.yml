@@ -1,0 +1,28 @@
+---
+  - name: scp db script
+    template:
+      src: "{{ item }}"
+      dest: /tmp/
+    with_items:
+      - AuthCenter.sql
+      - basev2.sql
+      - neunnManager.sql
+
+  - name: import authcenter data
+    mysql_db:
+      state: import
+      #name: "{{ authcenter_database_name }}"
+      #target: /tmp/AuthCenter.sql
+      name: "{{ item.name1 }}"
+      target: "{{ item.name2 }}"
+      login_host: localhost
+      #login_host: "{{ virtual_ip }}"
+      login_user: root
+      login_port: "{{ db_port }}"
+      #login_port: 3306
+      login_password: "{{ galera_root_password }}"
+    with_items:
+      - { name1: "{{ authcenter_database_name }}", name2: "/tmp/AuthCenter.sql"  }
+      - { name1: "{{ ncloud_database_name }}", name2: "/tmp/basev2.sql"  }
+      - { name1: "{{ manager_database_name }}", name2: "/tmp/neunnManager.sql"  }
+   

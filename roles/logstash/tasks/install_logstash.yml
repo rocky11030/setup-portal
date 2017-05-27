@@ -1,0 +1,57 @@
+---
+
+ # - name: get logstash-{{ logstash_version }}.tar.gz
+ #   get_url:
+ #     url: "{{apache_url}}/logstash-{{ logstash_version }}.tar.gz"
+ #     dest: /opt
+  
+  - name: get logstash-{{ logstash_version }}.tar.gz
+    copy:
+      src: "logstash-{{ logstash_version }}.tar.gz"
+      dest: /opt
+    tags:
+      - log1 
+
+  - name: Unpack the logstash-{{ logstash_version }}.tar.gz
+    shell: cd /opt && tar -xvz -f logstash-{{ logstash_version }}.tar.gz
+    tags:
+      - log1 
+
+
+  - name: scp logstash-base.conf
+    template:
+      src: logstash-base.conf
+      dest: /opt/logstash-{{ logstash_version }}/logstash-base.conf
+    tags:
+      - log1 
+
+  - name: Check whether the service is started
+    shell: "ps -ef | grep logstash-{{logstash_version  }} | grep -v grep"
+    register: logstash_result
+    ignore_errors: yes
+    tags:
+      - log2 
+
+  - debug:
+      msg: "##########################   logstash server is stop !   ########################"
+    when: logstash_result|failed
+    tags:
+      - log2 
+
+  - debug:
+      msg: "##########################   logstash server is start !   ########################"
+    when: logstash_result|success
+    tags:
+      - log2 
+
+  - name: If  server is started,kill server!
+    shell: kill -9 `ps -ef | grep "logstash-{{logstash_version  }}" | grep -v "grep" | awk '{print $2}'`
+    when: logstash_result|success
+    tags:
+      - log2 
+
+
+  - name: start logstash
+    shell: "cd /opt/logstash-{{ logstash_version }} &&  nohup ./bin/logstash agent -f logstash-base.conf >> {{ log_dir }}/logstash.log &"
+    tags:
+      - log3 

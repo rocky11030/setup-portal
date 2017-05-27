@@ -1,0 +1,5 @@
+---
+- hosts: nsearch
+  remote_user: root
+  roles:
+   - nsearch

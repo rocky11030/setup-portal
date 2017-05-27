@@ -1,0 +1,5 @@
+---
+- hosts: ncloud
+  remote_user: root
+  roles:
+   - ncloud

@@ -1,0 +1,56 @@
+---
+
+  #- name: get elasticsearch-{{ elasticsearch_version }}.tar.gz
+  #  get_url:
+  #    url: "{{apache_url}}/elasticsearch-{{ elasticsearch_version }}.tar.gz"
+  #    dest: /opt
+
+  - name: get elasticsearch-{{ elasticsearch_version }}.tar.gz
+    copy:
+      src: "elasticsearch-{{ elasticsearch_version }}.tar.gz"
+      dest: /opt
+  
+  - name: Unpack the elasticsearch-{{ elasticsearch_version }}.tar.gz
+    shell: cd /opt && tar -xvz -f elasticsearch-{{ elasticsearch_version }}.tar.gz
+
+  - name: scp elasticsearch.yml
+    template:
+      src: elasticsearch.yml
+      dest: /opt/elasticsearch-{{ elasticsearch_version }}/config
+
+  - name: Set elasticsearch-{{ elasticsearch_version }} permissions
+    shell: chown -R es:es /opt/elasticsearch-{{ elasticsearch_version }}
+
+  - name: Check whether the service is started
+    shell: "ps -ef | grep elasticsearch-{{ elasticsearch_version }} | grep -v grep"
+    register: elasticsearch_result
+    ignore_errors: yes
+
+  - debug:
+      msg: "##########################   elasticsearch server is stop !   ########################"
+    when: elasticsearch_result|failed
+
+  - debug:
+      msg: "##########################   elasticsearch server is start !   ########################"
+    when: elasticsearch_result|success
+
+  - name: If  server is started,kill server!
+    shell: kill -9 `ps -ef | grep "elasticsearch-{{elasticsearch_version  }}" | grep -v "grep" | awk '{print $2}'`
+    when: elasticsearch_result|success
+
+  - name: start elasticsearch
+    become: yes
+    become_method: su
+    become_user: es
+    shell: "cd /opt/elasticsearch-{{ elasticsearch_version }} &&  nohup ./bin/elasticsearch   &"
+
+  - name: Waiting for start lasticsearch service
+    wait_for:
+      port: "{{ es_port }}"
+      sleep: 10
+
+  - name: Create base index
+    uri: 
+      url: http://{{ groups['elasticsearch'][0] }}:{{ es_port }}/base
+      method: PUT
+    ignore_errors: yes

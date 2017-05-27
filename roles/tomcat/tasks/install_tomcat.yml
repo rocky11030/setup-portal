@@ -1,0 +1,50 @@
+---
+  #- name: Download Tomcat
+  #  get_url:
+  #    url: "{{apache_url}}/apache-tomcat-{{tomcat_version}}.tar.gz" 
+  #    dest: "{{tomcat_dir}}"
+
+  - name: Download Tomcat
+    copy:
+      src: "apache-tomcat-{{tomcat_version}}.tar.gz" 
+      dest: "{{tomcat_dir}}"
+
+  - name: Extract archive
+    command: "/bin/tar xvf {{tomcat_dir}}/apache-tomcat-{{tomcat_version}}.tar.gz -C {{tomcat_dir}}"
+
+  - name: modify tomcat name
+    command: "mv {{tomcat_dir}}/apache-tomcat-{{tomcat_version}} {{tomcat_dir}}/tomcat-{{app_name}}"
+
+ # - name: modify tomcat name
+ #   command: "ln -s {{tomcat_dir}}/apache-tomcat-{{tomcat_version}} {{tomcat_dir}}/tomcat-{{app_name}}"
+  
+  - name: scp tomcat start script
+    template:
+      src: tomcat.j2
+      dest: /etc/init.d/tomcat-{{app_name}}
+      mode: 0755
+
+  - name: scp catalina.sh file
+    template:
+      src: catalina.sh.j2
+      dest: "{{tomcat_dir}}/tomcat-{{app_name}}/bin/catalina.sh"
+      mode: 0755
+    notify: restart tomcat
+
+  - name: scp server.xml file
+    template:
+      src: server.xml.j2
+      dest: "{{tomcat_dir}}/tomcat-{{app_name}}/conf/server.xml"
+    notify: restart tomcat
+
+  - name: scp tomcat-users.xml file
+    template:
+      src: tomcat-users.xml.j2
+      dest: "{{tomcat_dir}}/tomcat-{{app_name}}/conf/tomcat-users.xml"
+    notify: restart tomcat
+    tags: test_start
+
+  - name: remove apache-tomcat-{{tomcat_version}}.tar.gz
+    file:
+      path: "{{tomcat_dir}}/apache-tomcat-{{tomcat_version}}.tar.gz"
+      state: absent

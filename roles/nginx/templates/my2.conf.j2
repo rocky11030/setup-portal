@@ -1,0 +1,73 @@
+server {
+    listen {{nginx_port}};
+    server_name  www.base.net;
+    access_log  logs/quancha.access.log;
+    error_log  logs/quancha.error.log;
+    proxy_set_header real-ip $remote_addr;
+    ## send request back to apache ##
+    location  ^~ /250/ {
+	    if ($request_method = OPTIONS ) {
+           more_set_headers "Access-Control-Allow-Origin: *";
+           more_set_headers "Access-Control-Allow-Credentials: true"; 
+           more_set_headers "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS";	
+		   more_set_headers "Access-Control-Allow-Headers: X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,TimeStamp,X-Neunn-UUID,region,poolName,X-Neunn-Sign";     
+           return 200;
+        }
+           proxy_pass  http://{{groups['ncloud'][0]}}:{{ncloud_port}}/;
+           #Proxy Settings
+		   more_set_headers "Access-Control-Allow-Origin: *";
+           more_set_headers "Access-Control-Allow-Credentials: true"; 
+           more_set_headers "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS";	
+		   more_set_headers "Access-Control-Allow-Headers: X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,TimeStamp,X-Neunn-UUID,region,poolName,X-Neunn-Sign";            
+	}
+   location ^~ /login/ {
+        if ($request_method = OPTIONS ) {
+           more_set_headers "Access-Control-Allow-Origin: *";
+           more_set_headers "Access-Control-Allow-Credentials: true"; 
+           more_set_headers "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS";	
+		   more_set_headers "Access-Control-Allow-Headers: X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,TimeStamp,X-Neunn-UUID,region,poolName,X-Neunn-Sign";     
+           return 200;
+        }
+           proxy_pass  http://{{groups['authcenter'][0]}}:{{authcenter_port}}/;
+           #Proxy Settings
+		   more_set_headers "Access-Control-Allow-Origin: *";
+           more_set_headers "Access-Control-Allow-Credentials: true"; 
+           more_set_headers "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS";	
+		   more_set_headers "Access-Control-Allow-Headers: X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,TimeStamp,X-Neunn-UUID,region,poolName,X-Neunn-Sign";                 
+   }
+  
+   location ^~ /logout/ {
+        if ($request_method = OPTIONS ) {
+           more_set_headers "Access-Control-Allow-Origin: *";
+           more_set_headers "Access-Control-Allow-Credentials: true"; 
+           more_set_headers "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS";	
+		   more_set_headers "Access-Control-Allow-Headers: X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,TimeStamp,X-Neunn-UUID,region,poolName,X-Neunn-Sign";     
+           return 200;
+        }
+           proxy_pass  http://{{groups['authcenter'][0]}}:{{authcenter_port}}/;
+           #Proxy Settings
+		   more_set_headers "Access-Control-Allow-Origin: *";
+           more_set_headers "Access-Control-Allow-Credentials: true"; 
+           more_set_headers "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS";	
+		   more_set_headers "Access-Control-Allow-Headers: X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,TimeStamp,X-Neunn-UUID,region,poolName,X-Neunn-Sign";                  
+    }
+
+   
+   location ^~ /auth/ {
+        if ($request_method = OPTIONS ) {
+           more_set_headers "Access-Control-Allow-Origin: *";
+           more_set_headers "Access-Control-Allow-Credentials: true"; 
+           more_set_headers "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS";	
+		   more_set_headers "Access-Control-Allow-Headers: X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,TimeStamp,X-Neunn-UUID,region,poolName,X-Neunn-Sign";     
+           return 200;
+        }
+           proxy_pass  http://{{groups['authcenter'][0]}}:{{authcenter_port}}/;
+           #Proxy Settings
+		   more_set_headers "Access-Control-Allow-Origin: *";
+           more_set_headers "Access-Control-Allow-Credentials: true"; 
+           more_set_headers "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS";	
+		   more_set_headers "Access-Control-Allow-Headers: X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,TimeStamp,X-Neunn-UUID,region,poolName,X-Neunn-Sign";                  
+    }
+
+}
+

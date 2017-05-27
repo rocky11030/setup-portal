@@ -1,0 +1,32 @@
+---
+
+  - name: Set apache2 port
+    template:
+      src: 000-default.conf
+      dest: /etc/apache2/sites-available/000-default.conf
+    notify: restart apache2
+
+  - name: Set apache2 port
+    template:
+      src: ports.conf
+      dest: /etc/apache2/ports.conf
+    notify: restart apache2
+
+
+  - name: Set apache2 dir
+    template:
+      src: default-ssl.conf
+      dest: /etc/apache2/sites-available/default-ssl.conf
+    notify: restart apache2
+
+  - name: set DirectoryIndex
+    template:
+      src: dir.conf
+      dest: /etc/apache2/mods-available
+    notify: restart apache2
+
+  - name: scp apache2.conf
+    copy:
+      src: apache2.conf 
+      dest: /etc/apache2
+    notify: restart apache2

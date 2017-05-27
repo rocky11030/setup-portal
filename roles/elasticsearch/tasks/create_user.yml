@@ -1,0 +1,6 @@
+---
+
+  - name: Add the user 'es' 
+    user:
+      name: es
+      shell: /bin/bash

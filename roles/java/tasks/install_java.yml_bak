@@ -1,0 +1,16 @@
+---
+
+  - name: add-apt-repository ppa:webupd8team/java
+    shell: add-apt-repository ppa:webupd8team/java
+
+  - name: apt-get update
+    apt:
+      update_cache: yes
+
+  - name: add license 
+    shell: echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+
+  - name: install jdk
+    apt:
+      name: oracle-java7-installer
+      state: present

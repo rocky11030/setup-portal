@@ -1,0 +1,39 @@
+---
+
+  #- name: get neunn-search-0.0.1-SNAPSHOT.jar
+  #  get_url:
+  #    url: "{{apache_url}}/neunn-search-{{nsearch_version}}.jar"
+  #    dest: /opt
+  
+  - name: get neunn-search-0.0.1-SNAPSHOT.jar
+    copy:
+      src: "neunn-search-{{nsearch_version}}.jar"
+      dest: /opt
+
+  - name: scp dubbo-consumer.xml
+    template:
+      src: dubbo-consumer.j2
+      dest: /opt/dubbo-consumer.xml
+
+  - name: modify dubbo-consumer.xm
+    shell: cd /opt/ && jar -uf "neunn-search-{{nsearch_version}}.jar" dubbo-consumer.xml
+
+  - name: check nsearch server stop
+    shell: "ps -ef | grep neunn-search-{{nsearch_version}}.jar | grep -v grep"
+    register: nsearch_result
+    ignore_errors: yes
+
+  - debug:
+      msg: "##########################   nsearch server is stop !   ########################"
+    when: nsearch_result|failed
+
+  - debug:
+      msg: "##########################   nsearch server is start !   ########################"
+    when: nsearch_result|success
+
+  - name: If nsearch server is started,kill server!
+    shell: kill -9 `ps -ef | grep "neunn-search-{{nsearch_version}}.jar" | grep -v "grep" | awk '{print $2}'`
+    when: nsearch_result|success
+
+  - name: start nsearch
+    shell: "nohup java -jar /opt/neunn-search-{{nsearch_version}}.jar >> {{log_dir}}/nsearch.log &"

@@ -1,0 +1,5 @@
+---
+- hosts: portalnd
+  remote_user: root
+  roles:
+   - portalnd

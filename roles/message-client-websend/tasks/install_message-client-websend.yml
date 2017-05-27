@@ -1,0 +1,39 @@
+---
+
+#  - name: get message-client-websend-1.2.0.jar
+#    get_url:
+#      url: "{{apache_url}}/message-client-websend-{{message_client_websend_version}}.jar"
+#      dest: /opt
+
+  - name: get message-client-websend-1.2.0.jar
+    copy:
+      src: "message-client-websend-{{message_client_websend_version}}.jar"
+      dest: /opt
+  
+  - name: scp application.xml
+    template:
+      src: application.xml.j2
+      dest: /opt/application.xml
+
+  - name: modify application.xml
+    shell: cd /opt/ && jar -uf "message-client-websend-{{message_client_websend_version}}.jar" application.xml
+
+  - name: check message-client-websend server stop
+    shell: "ps -ef | grep message-client-websend-{{message_client_websend_version}}.jar | grep -v grep"
+    register: message_client_websend_result
+    ignore_errors: yes
+
+  - debug:
+      msg: "##########################   message-client-websend server is stop !   ########################"
+    when: message_client_websend_result|failed
+
+  - debug:
+      msg: "##########################   message-client-websend server is start !   ########################"
+    when: message_client_websend_result|success
+
+  - name: If message-client-websend server is started,kill server!
+    shell: kill -9 `ps -ef | grep "message-client-websend-{{message_client_websend_version}}.jar" | grep -v "grep" | awk '{print $2}'`
+    when: message_client_websend_result|success
+
+  - name: start message-client-websend
+    shell: "nohup java -jar /opt/message-client-websend-{{message_client_websend_version}}.jar >> {{log_dir}}/message-client-websend.log &"

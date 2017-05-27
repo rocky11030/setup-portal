@@ -1,0 +1,23 @@
+---
+# tomcat optimize
+Xms: 2048
+Xmx: 4096
+Xmn: 512
+PermSize: 512
+MaxPermSize: 512
+NewSize: 512
+MaxNewSize: 1024
+ParallelGCThreads: 200
+
+connectionTimeout: 20000
+minSpareThreads: 25
+maxSpareThreads: 75
+enableLookups: false
+disableUploadTimeout: true
+acceptCount: 500
+maxThreads: 500
+maxProcessors: 500
+minProcessors: 5
+useURIValidationHack: false
+compression: on
+compressionMinSize: 2048

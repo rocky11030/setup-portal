@@ -1,0 +1,7 @@
+---
+app_name: NeunnManager
+shutdown_port: 8205
+redirect_Port: 8243
+con_port: 8209
+
+war_version: 2.2.stable

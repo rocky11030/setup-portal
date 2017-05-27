@@ -1,0 +1,5 @@
+---
+
+  - include: install_manager.yml
+    tags:
+      install_manager

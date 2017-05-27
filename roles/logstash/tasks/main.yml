@@ -1,0 +1,3 @@
+---
+  - include: config_rsyslog.yml
+  - include: install_logstash.yml

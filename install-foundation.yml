@@ -1,0 +1,5 @@
+---
+- hosts: foundation
+  remote_user: root
+  roles:
+   - foundation

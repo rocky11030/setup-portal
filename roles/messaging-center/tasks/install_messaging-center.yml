@@ -1,0 +1,39 @@
+---
+
+  #- name: get messaging-center-1.2.0.jar
+  #  get_url:
+  #    url: "{{apache_url}}/messaging-center-{{messaging_center_version}}.jar"
+  #    dest: /opt
+
+  - name: get messaging-center-1.2.0.jar
+    copy:
+      src: "messaging-center-{{messaging_center_version}}.jar"
+      dest: /opt
+  
+  - name: scp applicationContext.xml
+    template:
+      src: applicationContext.xml.j2
+      dest: /opt/applicationContext.xml
+
+  - name: modify applicationContext.xml
+    shell: cd /opt/ && jar -uf "messaging-center-{{messaging_center_version}}.jar" applicationContext.xml
+
+  - name: check messaging-center server stop
+    shell: "ps -ef | grep messaging-center-{{messaging_center_version}}.jar | grep -v grep"
+    register: messaging_center_result
+    ignore_errors: yes
+
+  - debug:
+      msg: "##########################   messaging-center server is stop !   ########################"
+    when: messaging_center_result|failed
+
+  - debug:
+      msg: "##########################   messaging-center server is start !   ########################"
+    when: messaging_center_result|success
+
+  - name: If messaging-center server is started,kill server!
+    shell: kill -9 `ps -ef | grep "messaging-center-{{messaging_center_version}}.jar" | grep -v "grep" | awk '{print $2}'`
+    when: messaging_center_result|success
+
+  - name: start messaging-center
+    shell: "nohup java -jar /opt/messaging-center-{{messaging_center_version}}.jar >> {{log_dir}}/messaging-center.log &"

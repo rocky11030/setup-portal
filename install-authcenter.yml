@@ -1,0 +1,5 @@
+---
+- hosts: authcenter
+  remote_user: root
+  roles:
+   - authcenter

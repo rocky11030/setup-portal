@@ -1,0 +1,28 @@
+---
+
+  - name: install unzip
+    apt:
+      name: unzip
+
+#  - name: Download portalnd
+#    get_url:
+#      url: "{{ apache_url }}/{{ app_name }}-{{ war_version }}.zip"
+#      dest: "{{ DocumentRoot }}/{{ app_name }}.zip"
+
+#  - name: unarchive {{ app_name }}.zip
+#    unarchive:
+#      src: "{{ DocumentRoot }}/{{ app_name }}.zip"
+#      dest: "{{ DocumentRoot }}"
+#      remote_src: True
+  
+  - name: unarchive {{ app_name }}.zip
+    unarchive:
+      src: "{{ app_name }}-{{ war_version }}.zip"
+      dest: "{{ DocumentRoot }}"
+      #remote_src: True
+  
+  - name: scp constant.js
+    template:
+      src: constant.js
+      dest: "{{ DocumentRoot }}/{{ app_name }}/js/constant/constant.js"
+    notify: restart apache2

@@ -1,0 +1,14 @@
+---
+
+  - name: check java is installed
+    shell: java -version
+    register: java_version_result
+    ignore_errors: yes
+
+  - debug:
+      msg: "##########################   java is not install !   ########################"
+    when: java_version_result|failed
+
+  - debug:
+      msg: "##########################   java is install !   ########################"
+    when: java_version_result|success

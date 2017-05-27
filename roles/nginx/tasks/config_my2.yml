@@ -1,0 +1,26 @@
+---
+
+  - name: scp my2.conf
+    template:
+      src: my2.conf.j2
+      dest: "{{nginx_install_dir}}/my2.conf"
+    notify:
+      - restart nginx
+
+  - name: modify nginx.conf , include my2.conf
+    lineinfile:
+     path: "{{nginx_install_dir}}/nginx.conf"
+     insertafter: '^http'
+     line: "    include my2.conf;"
+    notify:
+      - restart nginx
+
+  - name: modify nginx.conf , modify port 801
+    replace:
+     path: "{{nginx_install_dir}}/nginx.conf"
+     regexp: '^(\s+)listen (\s+)80'
+     replace: '        listen 801'
+    notify:
+      - restart nginx
+    tags:
+      - config_nginx

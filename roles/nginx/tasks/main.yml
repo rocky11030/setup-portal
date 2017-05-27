@@ -1,0 +1,12 @@
+---
+
+  - include: install_base_env.yml 
+    tags:
+      - install_base_env
+  - include: install_nginx.yml
+    tags:
+      - install_nginx
+
+  - include: config_my2.yml
+    tags:
+    - config_my2

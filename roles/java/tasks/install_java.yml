@@ -1,0 +1,5 @@
+---
+
+  - name: install openjdk-7-jdk
+    apt:
+      name: openjdk-7-jdk

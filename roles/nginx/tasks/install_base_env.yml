@@ -1,0 +1,28 @@
+---
+
+  - name: install libpcre3-dev aptitude libssl-dev
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - libpcre3-dev
+      - aptitude
+      - libssl-dev
+
+  - name: install openssl develop library
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - openssl
+      - libssl0.9.8
+      - libssl-dev
+
+  - name: Compile environment
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - build-essential 
+      - libtool
+

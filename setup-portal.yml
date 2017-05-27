@@ -1,0 +1,17 @@
+---
+#- include: config-database.yml
+#- include: config-rabbitmq.yml
+#- include: install-foundation.yml
+#- include: install-redis.yml
+#- include: install-java.yml
+#- include: install-zookeeper.yml
+#- include: install-nginx.yml
+#- include: install-messaging-center.yml
+#- include: install-message-client-websend.yml
+#- include: install-logstash.yml
+#- include: install-elasticsearch.yml
+- include: install-authcenter.yml
+- include: install-ncloud.yml
+- include: install-manager.yml
+- include: install-portalnd.yml
+- include: install-nsearch.yml

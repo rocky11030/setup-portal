@@ -1,0 +1,5 @@
+---
+
+  - include: install_messaging-center.yml
+    tags:
+      - install_messaging-center

@@ -1,0 +1,17 @@
+---
+
+  - name: Using neunn source
+    template: src=sources.j2 dest=/etc/apt/sources.list
+    tags:
+      - neunn_source
+    when: use_neunn_source == True
+
+  - name: Install Updates, Patches and Additional Security Software (Not Scored)
+    apt: update_cache=yes  cache_valid_time={{apt_cache_valid_time}}
+    tags:
+      - apt_update
+
+  - name: Install Updates, Patches and Additional Security Software (Not Scored)
+    shell: apt-get update -y
+    tags:
+      - apt_update

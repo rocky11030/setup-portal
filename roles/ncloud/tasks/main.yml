@@ -1,0 +1,5 @@
+---
+
+  - include: install_ncloud.yml
+    tags:
+      install_ncloud

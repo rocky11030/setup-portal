@@ -1,0 +1,7 @@
+---
+  - include: install_mysql_python_packs.yml
+    tags: install_python
+  - include: create_databases.yml
+  - include: import_data.yml
+    tags:
+      import_data

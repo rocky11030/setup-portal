@@ -1,0 +1,7 @@
+---
+app_name: AuthCenter
+shutdown_port: 8305
+redirect_Port: 8343
+con_port: 8309
+
+war_version: 2.2.stable

@@ -1,0 +1,5 @@
+---
+- hosts: message-client-websend
+  remote_user: root
+  roles:
+   - message-client-websend

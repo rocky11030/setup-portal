@@ -1,0 +1,4 @@
+---
+- include: install_zookeeper.yml
+  tags:
+    - install_zookeeper

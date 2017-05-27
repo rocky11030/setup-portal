@@ -1,0 +1,10 @@
+---
+
+  - include: check_java_install.yml
+    tags:
+      - check_java_install
+
+  - include: install_java.yml
+    when: java_version_result|failed
+    tags:
+      - install_java

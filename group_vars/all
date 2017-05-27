@@ -1,0 +1,97 @@
+---
+# 该地址存放安装包
+#apache_url: http://x.x.x.x
+
+# openstack keystone ip and port
+openstack_endpoint_pass: "*****"
+openstack_endpoint: 10.126.0.200
+openstack_endpoint_port: 5000
+
+# ceph存储类型
+volumeType_BackendName1: rbdbackend
+
+## DB
+# DB管理员的用户名、密码，用户创建
+
+virtual_ip: 10.126.0.200
+galera_root_password: "*******"
+#db_manager_user: 
+#db_manager_passwd: 
+
+# 云平台使用数据库尽量使用普通用户，所以除了上面的root用户之后，还需要设置普通用户。
+# 普通用户的用户名、密码是通过脚本创建，所以db_username、db_password参数决定普通用户的用户名、密码。
+# db_password和db_password_mw区别是一个是加密密码，一个是明文密码。前者是给ncloud、manager、authcenter配置的，后者是为了创建用户设置的密码。
+
+db_ip: 10.126.0.1
+db_port: 3307
+db_username: neunncloud
+#切换目录:  cd /usr/local/tomcat-Base/webapps/ncloud/WEB-INF/lib 
+#然后执行:  java -cp druid-0.2.25.jar com.alibaba.druid.filter.config.ConfigTools `you_password`
+db_password: OJxWtI/SfQnHSYrTKYHNvkZn0evctA8V675v76A0O9IOtiTJInROKdS5hIDL2ZeOQShB3VSqgGbMMG5n2Prcfw==
+db_password_mw: cloud@2017 
+ncloud_database_name: basev3
+manager_database_name: neunnManagerv3
+authcenter_database_name: AuthCenterv3
+
+
+# rabbit mq，使用的是openstack的rabbit mq，配置正确信息即可。
+rabbitmq_ip: 10.126.0.200
+rabbitmq_port: 5672
+rabbitmq_user: portal 
+rabbitmq_passwd: portal
+
+# 设置S3地址，portalnd中设置，配置好之后，还需要在S3端配置portalnd信息。
+s3_ip: 10.126.0.9
+
+# port
+ncloud_port: 8801
+authcenter_port: 8888
+#登录方式http://x.x.x.x:8802/NeunnManager
+#登录manager的默认账号密码为administrator 和 123456
+neunnmanager_port: 8802
+nginx_port: 801
+
+# ubuntu apt source
+use_neunn_source: True
+apt_source_url: 10.2.13.150
+# ubuntu version
+ubuntu_version: trusty
+# Only update apt cache if older than this value (in seconds)
+apt_cache_valid_time: 3600
+
+# messaging-center 有邮件发送功能，以下需要配置邮件服务器相关信息
+mail_smtp_host: smtp.exmail.qq.com
+mail_smtp_port: 25
+mail_sender: ******
+mail_mail_sender_password: *****
+
+
+################################  以下配置信息，很少修改  ################################
+
+## role redis
+
+# redis port
+redis_port: 6379
+# redis bind ip
+redis_bind_ip: 0.0.0.0
+
+## role zookeeper
+client_port: 2181
+
+## set tomcat version and dir
+tomcat_version: 7.0.75
+#tomcat_source_dir: /usr/local/src
+tomcat_dir: /usr/local
+
+# set tomcat username and password
+admin_username: ****
+admin_password: ****
+
+# elk
+es_port: 9200
+ns_port: 5656
+rsyslog_port: 514
+
+# openstack regionOne
+RegionOne_name: nova
+RegionTwo_name: nova

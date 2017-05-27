@@ -1,0 +1,7 @@
+---
+app_name: ncloud
+shutdown_port: 8105
+redirect_Port: 8143
+con_port: 8109
+
+war_version: 2.2.stable

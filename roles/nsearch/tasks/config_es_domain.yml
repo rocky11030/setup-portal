@@ -1,0 +1,7 @@
+---
+
+  - name: modify /etc/hosts
+    lineinfile:
+      path: /etc/hosts
+      insertafter: state=EOF
+      line: "{{ groups['elasticsearch'][0] }} elasticsearch.server"
