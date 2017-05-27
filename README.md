@@ -10,19 +10,19 @@
 
 
 ## 版本说明
-- NeunnCloud：2.2.stable
+- 软件版本：2.2.stable
 - ansible：> 2.3.0
-- NeunnCloud OS：Ubuntu 14.04.5 LTS
+- OS：Ubuntu 14.04.5 LTS
 
 ## 如何使用
 
-1. 将所有安装包上传到apache目录
+1. 因为包很大，所以大部分包暂时没有放到代码里面:
 
 ```
 # 目录结构：
 # tree 
 .
-├── apache-tomcat-7.0.77.tar.gz
+├── apache-tomcat-7.5.77.tar.gz
 ├── AuthCenter-2.2.stable.war
 ├── elasticsearch-2.3.5.tar.gz
 ├── logstash-2.3.4.tar.gz
@@ -48,13 +48,12 @@
 4. 执行安装脚本  
 
 ```
-ansible-playbook -i hosts config-database.yml -k
-SSH password:   # 输入数据库服务器的密码
+#ansible-playbook -i hosts config-database.yml -k
+#SSH password:   # 输入数据库服务器的密码
 
-ansible-playbook -i hosts config-rabbitmq.yml -k
-SSH password:   # 输入rabbitmq服务器的密码
+#ansible-playbook -i hosts config-rabbitmq.yml -k
+#SSH password:   # 输入rabbitmq服务器的密码
 
-nsible-playbook -i hosts install-neunncloud.yml -k
-SSH password:   # 输入neunncloud服务器的密码
+nsible-playbook -i hosts setup_portal.yml
 
 ```
